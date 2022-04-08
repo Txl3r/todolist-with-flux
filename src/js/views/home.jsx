@@ -1,53 +1,23 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../../styles/home.css";
+import { Context } from "../store/appContext";
 
 export const Home = () => {
 	const [todoList, setTodolist] = useState([]);
 	const [listItem, setListitem] = useState("");
-
+	const {store, actions} = useContext(Context)
 	const line = (x) => {
 		const newList = todoList.filter((element, index) => index !== index);
 		setTodolist(newList);
-		fetch("https://assets.breathco.de/apis/fake/todos/user/harvey46", {
-			method:"PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(newList),
-			redirect:"follow",
-		})
-			.then((response) => {
-				response.status === 200 ? setTodolist(newList) : "";
-			})
-			.then((result) => console.log(result))
-			.catch((error) => console.log("error", error));
+	
 	};
 
-	useEffect(() => {
-		fetch("https://assets/breathco.de/apis/fake/todos/harvey46", {
-			method:"GET",
-			redirect:"follow",
-		})
-			.then((response) => response.json())
-			.then((result) => setTodolist(result))
-			.catch((error) => console.log("error", error));
-	}, []);
+
 
 	const addItem = (newItem) => {
 		const newList = [...todoList, { label: newItem, done: false}];
-		fetch("https://assets/breatheco.de/apis/fake/todos/harvey46", {
-			method:"PUT",
-			redirect:{
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(newList),
-			redirect: "follow",
-		})
-			.then((response) => {
-				response.status === 200 ? setTodolist(newList) : "";
-			})
-			.then((result) => setTodolist(result))
-			.catch((error) => console.log('error', error));
+		setTodolist(newList)
+		
 	};
 
 	const completeTodo = (index) => {
@@ -67,12 +37,12 @@ export const Home = () => {
 					type="test"
 					className="form-control"
 					placeholder="add a task"
-					onChange={(e) => setListitem(e.change.value)}
+					onChange={(e) => setListitem(e.target.value)}
 					value={listItem}
 				/>
 				<button
 					onClick={() => {
-						if (listIeem !== "") {
+						if (listItem !== "") {
 							addItem(listItem);
 							setListitem("");
 						}
@@ -84,8 +54,7 @@ export const Home = () => {
 				</button>
 			</div>
 			<ul className="list-group">
-				{todoList &&
-					todoList.map((element, index) => {
+				{store.list.map((element, index) => {
 						return(
 							<li key={index} className="list-group-item">
 								<div className={element.done ? "strike" : ""}>
