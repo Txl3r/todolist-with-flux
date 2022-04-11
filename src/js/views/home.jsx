@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import "../../styles/home.css";
 import { Context } from "../store/appContext";
 
 export const Home = () => {
-	const [todoList, setTodolist] = useState([]);
+	const [todoList, setTodolist] = useState([])
 	const [listItem, setListitem] = useState("");
 	const {store, actions} = useContext(Context)
 	const line = (x) => {
@@ -66,7 +66,7 @@ export const Home = () => {
 								<a 
 									className="btn btn-primary"
 									 onClick={() => {
-										line(index);
+										actions.line(index);
 								}}>
 								x
 								</a>
